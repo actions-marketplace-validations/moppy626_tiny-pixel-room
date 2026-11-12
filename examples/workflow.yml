@@ -1,0 +1,28 @@
+# .github/workflows/tiny-pixel-room.yml として、プロフィール用リポジトリに置きます。
+name: ドットのおへや
+
+on:
+  schedule:
+    - cron: '17 15 * * *' # 毎日 00:17 (日本時間)
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/tiny-pixel-room.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tiny-pixel-room
+
+jobs:
+  card:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: moppy626/tiny-pixel-room@v1
+        with:
+          character: turnip # turnip / sunflower / cactus
+          pet-name: ''
+          language: ja # ja (日本語) / en (英語)

@@ -1,0 +1,673 @@
+/* 色はカードの昼と夜 (src/render.mjs の THEMES) から取っている。 */
+:root {
+  --page: #CFE8FF;
+  --panel: #FFFDF6;
+  --frame: #4A3C8C;
+  --text: #2A2350;
+  --muted: #574C7E;
+  --head: #6246C8;
+  --accent: #C22A70;
+  --empty: #D6D0EA;
+  --wall: #FFE3C2;
+  --code-bg: #F2EEFB;
+  --sans: system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono', monospace;
+  --pixel: 'Dot Unifont', var(--sans);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1C1636;
+    --panel: #2A2350;
+    --frame: #E7DFFF;
+    --text: #F5F0FF;
+    --muted: #C9C2E8;
+    --head: #BBA4FF;
+    --accent: #FF7AB6;
+    --empty: #473C7E;
+    --wall: #3A3070;
+    --code-bg: #17122F;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font: 15px/1.75 var(--sans);
+}
+
+a {
+  color: var(--head);
+  text-underline-offset: 3px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+
+/* Unifont は 1 em が 16 ドット。16px の倍数で使うと、1 ドットがちょうど px にそろう。 */
+.pixel {
+  font-family: var(--pixel);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* index.html の文は日本語と英語を両方書き、data-lang で言葉を示してある。サイトの言葉 (<html data-lang>。カードの言葉と同じ) と
+   違う方を隠す。<html lang> はブラウザの翻訳で書き換わり、lang は言葉を選ぶボタンのように両方の言葉で出す文にも付けるので、使わない。
+   どの要素に付いても隠れるよう、!important にする。 */
+html[data-lang='ja'] [data-lang='en'],
+html[data-lang='en'] [data-lang='ja'] {
+  display: none !important;
+}
+
+/* display を指定した要素 (.segmented など) も、hidden で隠れるようにする。 */
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 3px;
+}
+
+/* カードの枠と同じく、4 辺に 4px の線を引いて角を欠かせる。 */
+.panel,
+.framed {
+  background: var(--panel);
+  box-shadow:
+    0 -4px 0 var(--frame),
+    0 4px 0 var(--frame),
+    -4px 0 0 var(--frame),
+    4px 0 0 var(--frame);
+}
+
+.masthead,
+.workbench,
+.steps,
+.footer {
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+/* ページのいちばん上。見出しの右に、ページとカードの言葉の切り替えを置く。狭い画面では、見出しの上の右に置く。 */
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+  padding: 48px 24px 32px;
+}
+
+.masthead h1 {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0 0 12px;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.masthead p {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  max-width: 40em;
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ボタンの枠は 4px 外にはみ出すので、その分の余白をとる。見出しの 1 行目と高さをそろえる。 */
+.language-switch {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin: 4px 4px 0 0;
+}
+
+/* 広い画面では、左に設定、右にプレビュー。狭い画面では、プレビューを先に出す。 */
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  padding: 0 24px;
+}
+
+@media (min-width: 1100px) {
+  .workbench {
+    grid-template-columns: 372px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .settings {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .preview {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: 24px;
+  }
+}
+
+.preview-inner {
+  max-width: 840px;
+}
+
+.card-stage {
+  min-height: 200px;
+}
+
+.card-stage img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.preview-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+  margin-top: 20px;
+}
+
+.growth {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.growth label {
+  white-space: nowrap;
+}
+
+.growth output {
+  min-width: 8em;
+}
+
+input[type='range'] {
+  width: 160px;
+  min-width: 0;
+  flex: 0 1 160px;
+  accent-color: var(--accent);
+}
+
+.note {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.settings {
+  margin: 4px;
+  padding: 24px 24px 8px;
+}
+
+.settings h2,
+.steps h2 {
+  margin: 0 0 20px;
+  color: var(--head);
+}
+
+fieldset {
+  min-width: 0;
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+legend,
+.field > label {
+  display: block;
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.field {
+  margin-bottom: 24px;
+}
+
+/* 入力のない項目の見出し (カードの言葉)。すぐ下の説明 (.hint) の上の余白で間をあける。 */
+.field-title {
+  margin: 0;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.warnings {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--accent);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  background: var(--code-bg);
+  color: var(--text);
+  font-family: var(--pixel);
+  font-size: 16px;
+  line-height: 24px;
+  box-shadow: inset 0 0 0 2px var(--empty);
+}
+
+input[type='text']:focus-visible {
+  outline-offset: 2px;
+}
+
+input[type='text']::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* キャラクター。選んだものは、おへやの壁の色と、カードの差し色の枠にする。 */
+.characters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 4px;
+}
+
+.characters label {
+  position: relative;
+  cursor: pointer;
+}
+
+.characters input,
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px 8px;
+  background: var(--panel);
+  box-shadow:
+    0 -4px 0 var(--empty),
+    0 4px 0 var(--empty),
+    -4px 0 0 var(--empty),
+    4px 0 0 var(--empty);
+}
+
+.tile .sprite {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 80px;
+}
+
+.tile svg {
+  display: block;
+}
+
+.characters input:checked + .tile {
+  background: var(--wall);
+  box-shadow:
+    0 -4px 0 var(--accent),
+    0 4px 0 var(--accent),
+    -4px 0 0 var(--accent),
+    4px 0 0 var(--accent);
+}
+
+.characters input:focus-visible + .tile,
+.segmented input:focus-visible + span {
+  outline: 2px dashed var(--accent);
+  outline-offset: 7px;
+}
+
+/* いくつかから 1 つを選ぶボタン。プレビューの見え方では、見出しを左に並べる。 */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.segmented legend {
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+.settings .segmented legend {
+  float: none;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.segmented label {
+  position: relative;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.segmented input + span {
+  display: block;
+  padding: 4px 16px;
+  background: var(--panel);
+  box-shadow:
+    0 -4px 0 var(--empty),
+    0 4px 0 var(--empty),
+    -4px 0 0 var(--empty),
+    4px 0 0 var(--empty);
+}
+
+.segmented input:checked + span {
+  background: var(--wall);
+  box-shadow:
+    0 -4px 0 var(--accent),
+    0 4px 0 var(--accent),
+    -4px 0 0 var(--accent),
+    4px 0 0 var(--accent);
+}
+
+.segmented .hint {
+  flex-basis: 100%;
+  margin-top: 0;
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 4px 16px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* 項目の説明。マウスを重ねるか、キーボードで選ぶと、項目の下に出す。
+   説明の上にマウスを動かしても消えず (WCAG 1.4.13)、クリックやタップか Esc で閉じる (main.mjs)。
+   下の項目に重なるので、項目の名前の位置から出し、下の項目のチェックボックスは隠さない。
+   枠の色で塗り、ほかの枠と同じく 4 辺に 4px 足して角を欠かせる。上に 1 ドット 4px の三角を付ける。 */
+.item {
+  position: relative;
+}
+
+.tip {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 28px; /* チェックボックス (18px) と、名前とのすき間 (10px) の右 */
+  right: 4px;
+  z-index: 1;
+  padding: 4px 8px;
+  background: var(--frame);
+  color: var(--panel);
+  font-size: 13px;
+  line-height: 1.6;
+  box-shadow:
+    0 -4px 0 var(--frame),
+    0 4px 0 var(--frame),
+    -4px 0 0 var(--frame),
+    4px 0 0 var(--frame);
+  cursor: default;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s, visibility 0.12s;
+}
+
+.tip::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  background: var(--frame);
+  box-shadow:
+    -4px 4px 0 var(--frame),
+    0 4px 0 var(--frame),
+    4px 4px 0 var(--frame);
+}
+
+/* 項目と説明のあいだのすき間。マウスを項目から説明へ動かすあいだも、項目に重ねたままにする。 */
+.tip::after {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -4px;
+  right: -4px;
+  height: 14px;
+}
+
+/* マウスで項目をなぞったときに次々と出ないよう、少し待ってから出す。 */
+.item:hover .tip,
+.item:has(:focus-visible) .tip {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.15s;
+}
+
+.item[data-tip-closed] .tip {
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
+
+/* 貼り付ける手順。順に進めるので番号を付ける。枠の左右は、設定の枠にそろえる。 */
+.steps {
+  max-width: 1264px;
+  margin: 64px auto 0;
+  padding: 32px 24px 24px;
+}
+
+.steps ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  max-width: 880px;
+  padding-left: 56px;
+  margin-bottom: 32px;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -4px;
+  color: var(--head);
+  font-family: var(--pixel);
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.steps h3 {
+  margin: 0 0 4px;
+}
+
+.steps p {
+  margin: 0;
+  max-width: 44em;
+}
+
+/* コードのすぐ下の補足。.steps p の margin: 0 より強くして、コードとの間をあける。 */
+.steps .hint {
+  margin-top: 8px;
+}
+
+.code {
+  margin-top: 12px;
+  background: var(--code-bg);
+}
+
+/* 貼る先のファイル名と、コピーのボタン。 */
+.code-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 16px 0;
+}
+
+.file {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.code pre {
+  margin: 0;
+  padding: 12px 16px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.code code {
+  font-size: inherit;
+}
+
+.copy {
+  margin: 4px;
+  padding: 2px 12px;
+  border: 0;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow:
+    0 -4px 0 var(--frame),
+    0 4px 0 var(--frame),
+    -4px 0 0 var(--frame),
+    4px 0 0 var(--frame);
+}
+
+.copy[data-done] {
+  background: var(--wall);
+}
+
+.aside {
+  margin: 8px 0 0;
+  padding-left: 56px;
+  max-width: calc(44em + 56px);
+  color: var(--muted);
+}
+
+.footer {
+  padding: 40px 24px 48px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer p {
+  max-width: 60em;
+  margin: 0;
+}
+
+/* 狭い画面: 外側の余白を 16px にし、手順の番号を見出しの上に出す。 */
+@media (max-width: 640px) {
+  .masthead {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 32px 16px 24px;
+  }
+
+  .language-switch {
+    grid-column: 1;
+    justify-self: end;
+    margin-bottom: 16px;
+  }
+
+  .masthead h1 {
+    grid-row: 2;
+  }
+
+  .masthead p {
+    grid-row: 3;
+  }
+
+  .workbench {
+    padding: 0 16px;
+    gap: 32px;
+  }
+
+  .steps {
+    margin: 48px 20px 0;
+    padding: 24px 16px 16px;
+  }
+
+  .steps li,
+  .aside {
+    padding-left: 0;
+  }
+
+  .steps li::before {
+    position: static;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .footer {
+    padding: 32px 16px 40px;
+  }
+
+  .preview-controls {
+    gap: 16px;
+  }
+
+  .growth output {
+    min-width: 0;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1319px) {
+  .steps {
+    margin-inline: 28px;
+  }
+}

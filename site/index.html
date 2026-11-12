@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja" data-lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 次の行には scripts/build-site.mjs が、言葉ごとのページ (日本語は /、英語は /en/) の title、説明、
+       検索エンジンと SNS 向けの情報を入れる。en/ のページの <base> も入るので、相対 URL はこれより後に書く。 -->
+  <!-- page-meta -->
+  <meta name="color-scheme" content="light dark">
+  <!-- アイコンは scripts/build-site.mjs がカブのドット絵から作る。SVG を読めるブラウザは SVG を、読めないブラウザは PNG を使う。 -->
+  <link rel="icon" href="favicon.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <!-- ページとカードの言葉の切り替え。ページのいちばん上の右に置く (style.css)。
+         選んだ言葉は、カードの言葉 (ワークフローの language) にもなる (main.mjs)。 -->
+    <fieldset class="segmented language-switch">
+      <legend class="visually-hidden"><span data-lang="ja">ページとカードの言葉</span><span data-lang="en">Page and card language</span></legend>
+      <label><input type="radio" name="language" value="ja"><span class="pixel" lang="ja">日本語</span></label>
+      <label><input type="radio" name="language" value="en"><span class="pixel" lang="en">English</span></label>
+    </fieldset>
+    <h1 class="pixel"><span data-lang="ja">ドットのおへや</span><span data-lang="en">Tiny Pixel Room</span></h1>
+    <p data-lang="ja">GitHub で活動するほど育つ、ドット絵のおへやをプロフィールに飾れます。設定を選ぶとカードが変わり、下に貼り付けるコードができます。</p>
+    <p data-lang="en">Decorate your GitHub profile with a pixel-art room that grows as you stay active on GitHub. Pick your settings to update the card, then copy the code below.</p>
+  </header>
+
+  <main class="workbench">
+    <section class="preview" aria-labelledby="preview-title">
+      <div class="preview-inner">
+        <h2 id="preview-title" class="visually-hidden"><span data-lang="ja">プレビュー</span><span data-lang="en">Preview</span></h2>
+        <div class="card-stage">
+          <!-- 次の行には scripts/build-site.mjs が、ページの言葉の見本のカード (<img id="card">) を入れる。
+               フォントを読み終えると、main.mjs が選んだ設定のカードに描き替える。 -->
+          <!-- sample-card -->
+        </div>
+        <div class="preview-controls">
+          <!-- 背景が自動のときだけ出す、プレビューだけの昼と夜の切り替え。README に貼るコードは変えない (main.mjs)。 -->
+          <fieldset class="segmented" id="preview-mode">
+            <legend class="pixel"><span data-lang="ja">見え方</span><span data-lang="en">View</span></legend>
+            <label><input type="radio" name="mode" value="light"><span class="pixel"><span data-lang="ja">昼</span><span data-lang="en">Day</span></span></label>
+            <label><input type="radio" name="mode" value="dark"><span class="pixel"><span data-lang="ja">夜</span><span data-lang="en">Night</span></span></label>
+          </fieldset>
+          <div class="growth">
+            <label for="stage" class="pixel"><span data-lang="ja">育ち具合</span><span data-lang="en">Growth</span></label>
+            <input id="stage" type="range" min="0" max="4" step="1" value="0">
+            <output id="stage-name" for="stage" class="pixel"><span data-lang="ja">たね</span><span data-lang="en">Seed</span></output>
+          </div>
+        </div>
+        <p class="note" id="preview-status" aria-live="polite"><span data-lang="ja">プレビューを準備しています。</span><span data-lang="en">Preparing the preview.</span></p>
+      </div>
+    </section>
+
+    <section class="panel settings" aria-labelledby="settings-title">
+      <h2 id="settings-title" class="pixel"><span data-lang="ja">設定</span><span data-lang="en">Settings</span></h2>
+
+      <fieldset>
+        <legend class="pixel"><span data-lang="ja">キャラクター</span><span data-lang="en">Character</span></legend>
+        <div class="characters" id="characters"></div>
+        <p class="hint" data-lang="ja">あとで変えると、育て直しになります。</p>
+        <p class="hint" data-lang="en">Changing it later starts the growth over.</p>
+      </fieldset>
+
+      <div class="field">
+        <label for="pet-name" class="pixel"><span data-lang="ja">名前</span><span data-lang="en">Name</span></label>
+        <input id="pet-name" type="text" autocomplete="off" spellcheck="false" aria-describedby="pet-hint pet-warnings">
+        <!-- .kind には、選んだキャラクターの種類名が入る (main.mjs)。 -->
+        <p class="hint" id="pet-hint"><span data-lang="ja">10 文字まで。空のときは「<span class="kind">カブ</span>」になります。</span><span data-lang="en">Up to 10 characters. If left empty, it will be "<span class="kind">Turnip</span>".</span></p>
+        <ul class="warnings" id="pet-warnings" aria-live="polite"></ul>
+      </div>
+
+      <!-- カードの言葉は、ページの上の切り替えで選ぶ。ここでは、そのことだけを知らせる。 -->
+      <div class="field">
+        <p class="pixel field-title"><span data-lang="ja">カードの言葉</span><span data-lang="en">Card language</span></p>
+        <p class="hint" data-lang="ja">ページの上で選んだ言葉 (いまは日本語) になります。英語のカードにするときは、ページの上で <span lang="en">English</span> を選びます。</p>
+        <p class="hint" data-lang="en">It follows the language picked at the top of the page (English now). For a Japanese card, pick <span lang="ja">日本語</span> at the top of the page.</p>
+      </div>
+
+      <fieldset>
+        <legend class="pixel"><span data-lang="ja">カードに出す項目</span><span data-lang="en">Items on the card</span></legend>
+        <div class="items" id="items"></div>
+        <p class="hint" data-lang="ja">外した項目は詰めて並べます。すべて外すと、キャラクターだけの細いカードになります。</p>
+        <p class="hint" data-lang="en">Unchecked items are left out and the rest move up. Uncheck them all for a narrow card with just the character.</p>
+      </fieldset>
+
+      <fieldset class="segmented">
+        <legend class="pixel"><span data-lang="ja">背景</span><span data-lang="en">Background</span></legend>
+        <label><input type="radio" name="theme" value="auto"><span class="pixel"><span data-lang="ja">自動</span><span data-lang="en">Auto</span></span></label>
+        <label><input type="radio" name="theme" value="light"><span class="pixel"><span data-lang="ja">昼</span><span data-lang="en">Day</span></span></label>
+        <label><input type="radio" name="theme" value="dark"><span class="pixel"><span data-lang="ja">夜</span><span data-lang="en">Night</span></span></label>
+        <p class="hint" data-lang="ja">自動にすると、見る人の GitHub やブラウザの設定に合わせて、昼と夜のおへやが切り替わります。昼か夜を選ぶと、いつもその背景になります。</p>
+        <p class="hint" data-lang="en">Auto switches between the day and night room to match each viewer's GitHub or browser setting. Pick Day or Night to always use that background.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="pixel"><span data-lang="ja">動き</span><span data-lang="en">Motion</span></legend>
+        <label class="check"><input id="motion" type="checkbox" checked><span><span data-lang="ja">キャラクターを動かす</span><span data-lang="en">Animate the character</span></span></label>
+        <p class="hint" data-lang="ja">動きを減らす設定にしている人には、動かないカードを見せます。</p>
+        <p class="hint" data-lang="en">Visitors who prefer reduced motion see a still card.</p>
+      </fieldset>
+    </section>
+  </main>
+
+  <section class="panel steps" aria-labelledby="steps-title">
+    <h2 id="steps-title" class="pixel"><span data-lang="ja">プロフィールに飾る</span><span data-lang="en">Add it to your profile</span></h2>
+    <ol>
+      <li>
+        <h3 class="pixel"><span data-lang="ja">プロフィール用のリポジトリを用意する</span><span data-lang="en">Get your profile repository ready</span></h3>
+        <p data-lang="ja">ユーザー名と同じ名前の公開リポジトリです。まだなければ、GitHub で新しく作ります。</p>
+        <p data-lang="en">This is the public repository with the same name as your username. If you don't have one yet, create it on GitHub.</p>
+      </li>
+      <li>
+        <h3 class="pixel"><span data-lang="ja">ワークフローを置く</span><span data-lang="en">Add the workflow</span></h3>
+        <p data-lang="ja">そのリポジトリに <code>.github/workflows/tiny-pixel-room.yml</code> を作り、次の内容を貼ってコミットします。</p>
+        <p data-lang="en">In that repository, create <code>.github/workflows/tiny-pixel-room.yml</code>, paste the following, and commit it.</p>
+        <div class="code">
+          <div class="code-bar">
+            <span class="file">.github/workflows/tiny-pixel-room.yml</span>
+            <button type="button" class="copy pixel" data-copy="workflow"><span data-lang="ja">コピー</span><span data-lang="en">Copy</span></button>
+          </div>
+          <pre><code id="workflow"></code></pre>
+        </div>
+      </li>
+      <li>
+        <h3 class="pixel"><span data-lang="ja">カードができるのを待つ</span><span data-lang="en">Wait for your card</span></h3>
+        <p data-lang="ja">コミットすると Action が動き、1 分ほどで <code>tiny-pixel-room</code> フォルダにカードができます。そのあとは毎日 0:17 ごろ (日本時間) に更新されます。</p>
+        <p data-lang="en">Once you commit, the Action runs and creates your card in the <code>tiny-pixel-room</code> folder in about a minute. After that, it updates every day around 15:17 UTC.</p>
+      </li>
+      <li>
+        <h3 class="pixel"><span data-lang="ja">README に貼る</span><span data-lang="en">Add it to your README</span></h3>
+        <p data-lang="ja">プロフィール用のリポジトリの <code>README.md</code> に、次の内容を貼ります。</p>
+        <p data-lang="en">Paste the following into the <code>README.md</code> of your profile repository.</p>
+        <div class="code">
+          <div class="code-bar">
+            <span class="file">README.md</span>
+            <button type="button" class="copy pixel" data-copy="snippet"><span data-lang="ja">コピー</span><span data-lang="en">Copy</span></button>
+          </div>
+          <pre><code id="snippet"></code></pre>
+        </div>
+        <p class="hint" data-lang="ja">カードの下には、このサイトへの小さなリンクが付きます。要らなければ、<code>&lt;br&gt;</code> からあとの 2 行を消してください。</p>
+        <p class="hint" data-lang="en">A small link to this site appears under the card. If you don't want it, delete the last two lines, starting from <code>&lt;br&gt;</code>.</p>
+      </li>
+    </ol>
+    <p class="aside" data-lang="ja">スターやコミットなどは、公開リポジトリの分だけを数えます。くわしくは <a href="https://github.com/moppy626/tiny-pixel-room#非公開の活動の扱い">README の「非公開の活動の扱い」</a>にあります。</p>
+    <p class="aside" data-lang="en">Stars, commits, and the other stats count public repositories only. See <a href="https://github.com/moppy626/tiny-pixel-room/blob/main/README.en.md#private-activity">the README's section on private activity</a>.</p>
+  </section>
+
+  <footer class="footer">
+    <p data-lang="ja"><a href="https://github.com/moppy626/tiny-pixel-room">ソースコード (GitHub)</a>。MIT License です。カードの文字は <a href="fonts/UNIFONT-LICENSE.txt">GNU Unifont JP</a> の一部で描いています (SIL Open Font License 1.1)。同梱しているソフトウェアのライセンスは <a href="THIRD_PARTY_LICENSES.txt">こちら</a>。</p>
+    <p data-lang="en"><a href="https://github.com/moppy626/tiny-pixel-room">Source code (GitHub)</a>. MIT License. The text on the card is drawn with part of <a href="fonts/UNIFONT-LICENSE.txt">GNU Unifont JP</a> (SIL Open Font License 1.1). Licenses for the bundled software are <a href="THIRD_PARTY_LICENSES.txt">here</a>.</p>
+  </footer>
+</body>
+</html>

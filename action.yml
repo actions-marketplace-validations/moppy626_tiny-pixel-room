@@ -1,0 +1,40 @@
+# name は GitHub Marketplace の一覧に出る名前。世界中の人が英語で探しやすいよう、英語名にする。
+# Marketplace の名前はほかと重ねられないので、変えるときは新しい名前が空いているか確かめる。
+name: Tiny Pixel Room
+description: GitHub プロフィールに、育つドット絵のおへやを飾ります / Decorate your GitHub profile with a pixel-art room that grows as you contribute
+branding:
+  icon: home
+  color: green
+# 説明は日本語と英語を「 / 」で区切って書く。既定の言葉 (language) と同じく、日本語を先にする。
+# 日本語は README.md の「設定」の表に、英語は README.en.md の Inputs の表に合わせる。
+inputs:
+  github-token:
+    description: GitHub API の読み取りに使うトークン。既定のままにしてください。カードの push には actions/checkout の認証情報を使います / The token used to read the GitHub API. Keep the default. The card is pushed with the actions/checkout credentials
+    default: ${{ github.token }}
+  username:
+    description: カードに表示する GitHub ユーザー名 / The GitHub username shown on the card
+    default: ${{ github.repository_owner }}
+  character:
+    description: キャラクター (turnip / sunflower / cactus)。変えると成長はリセットされます / The character (turnip / sunflower / cactus). Changing it starts the growth over
+    default: turnip
+  pet-name:
+    description: キャラクターの名前 (10 文字まで)。空なら種類名になります / The character's name, up to 10 characters. If empty, the kind name is used
+    default: ''
+  hide:
+    description: 隠す項目をカンマ区切りで指定 (contrib, current, longest, langs, stars, commits, prs, issues, repos)。残った項目は詰めて並べます。all ですべて隠し、キャラクターだけの細いカードになります / Items to hide, separated by commas (contrib, current, longest, langs, stars, commits, prs, issues, repos). The remaining items move up. all hides every item for a narrow card with just the character
+    default: ''
+  language:
+    description: カードの言葉とキャラクターの名前 (ja / en)。変えても成長はリセットされません / The card text and the character's name (ja / en). Changing it doesn't reset the growth
+    default: ja
+  motion:
+    description: false にするとキャラクターが動かなくなります / false stops the character's animation
+    default: 'true'
+  output-dir:
+    description: カードと状態ファイル (state.json) を置くフォルダ。途中で変えるときは、前のフォルダの state.json も移してください / The folder for the cards and the state file (state.json). If you change it, move state.json from the old folder too, or the growth starts over
+    default: tiny-pixel-room
+  commit:
+    description: false にするとコミットしません。その場合は state.json を自分で保存しないと、毎回育て直しになります / false skips the commit. Then save state.json yourself, or the growth starts over on every run
+    default: 'true'
+runs:
+  using: node24
+  main: dist/index.js

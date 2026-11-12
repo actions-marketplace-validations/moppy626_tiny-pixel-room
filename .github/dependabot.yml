@@ -1,0 +1,13 @@
+# ワークフローで使う Action の新しい版が出たら、コミット SHA を更新する PR を作る。
+# npm の依存パッケージは、更新すると dist/index.js の作り直しが要るので、ここでは更新しない。
+# 脆弱性のある版が見つかったときの PR は、Settings の Dependabot security updates で受け取る。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - '*'

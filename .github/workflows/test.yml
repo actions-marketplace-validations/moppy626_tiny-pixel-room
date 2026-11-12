@@ -1,0 +1,38 @@
+name: テスト
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# 使う Action は、タグの付け替えの影響を受けないようコミット SHA で指定する。更新は Dependabot が PR で知らせる。
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      # 設定サイトは main に入ってから公開する (pages.yml) ので、作れなくなっていないかを PR のうちに確かめる。
+      - run: npm run site
+      # Action が実際に動かすのは dist/index.js なので、src を直して作り直し忘れていないか確かめる。
+      # README のサンプルのカードも、いまの描き方で作ったものか確かめる。
+      - name: dist と README のサンプルが src から作ったものと同じか確かめる
+        run: |
+          npm run build
+          npm run samples
+          if [ -n "$(git status --porcelain -- dist examples/samples)" ]; then
+            git status --short -- dist examples/samples
+            echo '::error::dist/index.js か examples/samples が src と合っていません。npm run build と npm run samples をしてからコミットしてください'
+            exit 1
+          fi

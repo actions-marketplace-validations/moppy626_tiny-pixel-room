@@ -1,0 +1,14 @@
+# 改行は、どの OS で取り出しても LF にそろえる。
+# dist/index.js と examples/samples は、作り直したものと同じかを CI (test.yml) で確かめるので、
+# Windows の core.autocrlf で CRLF に変わると、作業コピーとの比べ方がぶれる。
+* text=auto eol=lf
+
+# フォントと画像は中身を書き換えないよう、改行の変換も差分の表示もしない。
+*.otf binary
+*.woff binary
+*.png binary
+
+# dist/index.js は src を esbuild でまとめたもの (npm run build)。src と合っているかは CI で確かめるので、
+# PR の差分では畳んで表示し、リポジトリの言語の統計にも入れない。
+# examples/samples は、描き方の変化を PR で見られるよう、畳まずに表示する。
+dist/index.js linguist-generated

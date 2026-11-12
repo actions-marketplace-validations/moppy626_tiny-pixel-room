@@ -1,0 +1,388 @@
+{
+ "turnip": [
+  {
+   "rows": [
+    "...kkkk...",
+    "..kssssk..",
+    ".kssssssk.",
+    "kssksskssk",
+    "kssksskssk",
+    "kppssssppk",
+    ".kssssssk.",
+    "..kkkkkk.."
+   ],
+   "squash": 2,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "3": "kssssssssk",
+    "4": "kskksskksk"
+   }
+  },
+  {
+   "rows": [
+    "..kk....kk..",
+    ".kggk..kggk.",
+    ".kgggkkgggk.",
+    "..kkgddgkk..",
+    "....kddk....",
+    "...kkkkkk...",
+    "..kwwwwwwk..",
+    ".kwwkwwkwwk.",
+    ".kwwkwwkwwk.",
+    ".kppwwwwppk.",
+    "..kwwwwwwk..",
+    "...kkkkkk..."
+   ],
+   "squash": 8,
+   "leaves": 3,
+   "hop": 30,
+   "blink": {
+    "7": ".kwwwwwwwwk.",
+    "8": ".kwkkwwkkwk."
+   }
+  },
+  {
+   "rows": [
+    "..kkk......kkk..",
+    ".kgggk....kgggk.",
+    ".kggggk..kggggk.",
+    "..kgggdkkdgggk..",
+    "...kkkddddkkk...",
+    "......kddk......",
+    "....kkkkkkkk....",
+    "..kkwwwwwwwwkk..",
+    ".kwwwwwwwwwwwwk.",
+    ".kwwwwwwwwwwwwk.",
+    "kwwwkwwwwwwkwwwk",
+    "kwwwkwwwwwwkwwwk",
+    "kwppwwwkkwwwppwk",
+    "kwwwwwwwwwwwwwwk",
+    ".kwwwwwwwwwwwwk.",
+    "..kkkkkkkkkkkk.."
+   ],
+   "squash": 9,
+   "leaves": 3,
+   "hop": 30,
+   "blink": {
+    "10": "kwwwwwwwwwwwwwwk",
+    "11": "kwwkkwwwwwwkkwwk"
+   }
+  },
+  {
+   "rows": [
+    ".....kkk....kkk.....",
+    "..kkkgggk..kgggkkk..",
+    ".kgggggggkkgggggggk.",
+    ".kggggggddddggggggk.",
+    "..kkgggddddddgggkk..",
+    "....kkkkddddkkkk....",
+    "......kkkkkkkk......",
+    "....kkvvvvvvvvkk....",
+    "..kkvvvvvvvvvvvvkk..",
+    ".kwwwwwwwwwwwwwwwwk.",
+    ".kwwwwwwwwwwwwwwwwk.",
+    "kwwwwkwwwwwwwwkwwwwk",
+    "kwwwwkwwwwwwwwkwwwwk",
+    "kwwppwwwwkkwwwwppwwk",
+    "kwwwwwwwwwwwwwwwwwwk",
+    ".kwwwwwwwwwwwwwwwwk.",
+    "..kkwwwwwwwwwwwwkk..",
+    "....kkkkkkkkkkkk...."
+   ],
+   "squash": 10,
+   "leaves": 4,
+   "hop": 20,
+   "blink": {
+    "11": "kwwwwwwwwwwwwwwwwwwk",
+    "12": "kwwwkkwwwwwwwwkkwwwk"
+   }
+  },
+  {
+   "rows": [
+    ".....k...kk...k.....",
+    ".....kk.kyyk.kk.....",
+    ".....kykkyykkyk.....",
+    "..kkkkyyyyyyyykkkk..",
+    ".kggggkkkkkkkkggggk.",
+    ".kggggggddddggggggk.",
+    "..kkgggddddddgggkk..",
+    "....kkkkddddkkkk....",
+    "......kkkkkkkk......",
+    "....kkvvvvvvvvkk....",
+    "..kkvvvvvvvvvvvvkk..",
+    ".kwwwwwwwwwwwwwwwwk.",
+    "kwwwwkwwwwwwwwkwwwwk",
+    "kwwwwkwwwwwwwwkwwwwk",
+    "kwwppwwwwkkwwwwppwwk",
+    "kwwwwwwwwwwwwwwwwwwk",
+    ".kwwwwwwwwwwwwwwwwk.",
+    "..kkwwwwwwwwwwwwkk..",
+    "....kkkkkkkkkkkk...."
+   ],
+   "squash": 15,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "12": "kwwwwwwwwwwwwwwwwwwk",
+    "13": "kwwwkkwwwwwwwwkkwwwk"
+   }
+  }
+ ],
+ "sunflower": [
+  {
+   "rows": [
+    "....kk....",
+    "...knnk...",
+    "..knwwnk..",
+    ".knwwwwnk.",
+    ".knkwwknk.",
+    ".knkwwknk.",
+    ".knpwwpnk.",
+    "..knwwnk..",
+    "...knnk...",
+    "....kk...."
+   ],
+   "squash": 3,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "4": ".knwwwwnk."
+   }
+  },
+  {
+   "rows": [
+    "..kk....kk..",
+    ".kggk..kggk.",
+    ".kgggkkgggk.",
+    "..kkgddgkk..",
+    "....kddk....",
+    "...kddddk...",
+    "..kddddddk..",
+    "..kdkddkdk..",
+    "..kdkddkdk..",
+    "..kpddddpk..",
+    "...kddddk...",
+    "....kkkk...."
+   ],
+   "squash": 8,
+   "leaves": 3,
+   "hop": 30,
+   "blink": {
+    "7": "..kddddddk.."
+   }
+  },
+  {
+   "rows": [
+    "......kk......",
+    "..kk.kyyk.kk..",
+    "..kykkyykkyk..",
+    "..kyykyykyyk..",
+    "...kkkkkkkk...",
+    "..kggggggggk..",
+    "..kgkggggkgk..",
+    "..kgkggggkgk..",
+    "..kpggkkggpk..",
+    "...kggggggk...",
+    "....kkddkk....",
+    ".kkk..dd..kkk.",
+    "kgggkkddkkgggk",
+    ".kkkkkddkkkkk."
+   ],
+   "squash": 5,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "6": "..kggggggggk.."
+   }
+  },
+  {
+   "rows": [
+    ".....kk..kk..kk.....",
+    "....kyykkyykkyyk....",
+    ".kkkyyykkyykkyyykkk.",
+    "kyykyyykkyykkyyykyyk",
+    "kyyykyykkkkkkyykyyyk",
+    "kyyyykkbbbbbbkkyyyyk",
+    ".kkkkkbbkbbkbbkkkkk.",
+    "kyyyykbbkbbkbbkyyyyk",
+    "kyyyykbpbkkbpbkyyyyk",
+    ".kkkkkbbbbbbbbkkkkk.",
+    "kyyyykkbbbbbbkkyyyyk",
+    "kyyykyykkkkkkyykyyyk",
+    "kyykyyykkyykkyyykyyk",
+    ".kkkyyykkyykkyyykkk.",
+    "....kyykkyykkyyk....",
+    ".....kk..kk..kk.....",
+    "..kkkk...dd...kkkk..",
+    ".kggggkkkddkkkggggk.",
+    "..kkkkkkkddkkkkkkk.."
+   ],
+   "squash": 16,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "6": ".kkkkkbbbbbbbbkkkkk.",
+    "7": "kyyyykbkkbbkkbkyyyyk"
+   }
+  },
+  {
+   "rows": [
+    ".....k...kk...k.....",
+    ".....kk.kook.kk.....",
+    ".kkk.kokkookkok.kkk.",
+    "kyykkkooooooookkkyyk",
+    "kyyykkkkkkkkkkkkyyyk",
+    "kyyyykkbbbbbbkkyyyyk",
+    ".kkkkkbbkbbkbbkkkkk.",
+    "kyyyykbbkbbkbbkyyyyk",
+    "kyyyykbpbkkbpbkyyyyk",
+    ".kkkkkbbbbbbbbkkkkk.",
+    "kyyyykkbbbbbbkkyyyyk",
+    "kyyykyykkkkkkyykyyyk",
+    "kyykyyykkyykkyyykyyk",
+    ".kkkyyykkyykkyyykkk.",
+    "....kyykkyykkyyk....",
+    ".....kk..kk..kk.....",
+    "..kkkk...dd...kkkk..",
+    ".kggggkkkddkkkggggk.",
+    "..kkkkkkkddkkkkkkk.."
+   ],
+   "squash": 16,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "6": ".kkkkkbbbbbbbbkkkkk.",
+    "7": "kyyyykbkkbbkkbkyyyyk"
+   }
+  }
+ ],
+ "cactus": [
+  {
+   "rows": [
+    "...kkkk...",
+    "..kggggk..",
+    ".kggggggk.",
+    ".kgkggkgk.",
+    ".kgkggkgk.",
+    ".kpggggpk.",
+    "kkkkkkkkkk",
+    "kqqqqqqqqk",
+    ".kqqqqqqk.",
+    "..kkkkkk.."
+   ],
+   "squash": 2,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "3": ".kggggggk."
+   }
+  },
+  {
+   "rows": [
+    ".....kk.....",
+    "....kggk....",
+    "...kggggk...",
+    "..kggggggk..",
+    "..kgdggdgk..",
+    "..kgkggkgk..",
+    "..kgkggkgk..",
+    "..kpggggpk..",
+    "..kgdggdgk..",
+    ".kkkkkkkkkk.",
+    ".kqqqqqqqqk.",
+    "..kqqqqqqk..",
+    "...kkkkkk..."
+   ],
+   "squash": 4,
+   "leaves": 0,
+   "hop": 30,
+   "blink": {
+    "5": "..kggggggk.."
+   }
+  },
+  {
+   "rows": [
+    ".......kk.......",
+    "......kggk......",
+    ".....kggggk.....",
+    "....kggggggk....",
+    "....kgdggdgk....",
+    ".kk.kggggggk.kk.",
+    "kggkkgkggkgkkggk",
+    "kggkkgkggkgkkggk",
+    "kgggkpggggpkgggk",
+    ".kkggggggggggkk.",
+    "...kkggggggkk...",
+    "....kgdggdgk....",
+    "....kggggggk....",
+    "..kkkkkkkkkkkk..",
+    "..kqqqqqqqqqqk..",
+    "...kqqqqqqqqk...",
+    "....kkkkkkkk...."
+   ],
+   "squash": 12,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "6": "kggkkggggggkkggk"
+   }
+  },
+  {
+   "rows": [
+    "........kkkk........",
+    ".......krrrrk.......",
+    ".......krrrrk.......",
+    "......kkkkkkkk......",
+    ".....kggggggggk.....",
+    "....kggdggggdggk....",
+    ".kk.kggggggggggk.kk.",
+    "kggkkggkggggkggkkggk",
+    "kggkkggkggggkggkkggk",
+    "kgggkgpggggggpgkgggk",
+    "kggggkggggggggkggggk",
+    ".kkggggggggggggggkk.",
+    "...kkggggggggggkk...",
+    "....kggdggggdggk....",
+    "..kkkkkkkkkkkkkkkk..",
+    "..kqqqqqqqqqqqqqqk..",
+    "...kqqqqqqqqqqqqk...",
+    "....kkkkkkkkkkkk...."
+   ],
+   "squash": 13,
+   "leaves": 3,
+   "hop": 20,
+   "blink": {
+    "7": "kggkkggggggggggkkggk"
+   }
+  },
+  {
+   "rows": [
+    ".....k...kk...k.....",
+    ".....kk.kyyk.kk.....",
+    ".....kykkyykkyk.....",
+    ".....kyyyyyyyyk.....",
+    ".....kkkkkkkkkk.....",
+    "....kggdggggdggk....",
+    ".kk.kggggggggggk.kk.",
+    "kggkkggkggggkggkkggk",
+    "kggkkggkggggkggkkggk",
+    "kgggkgpggggggpgkgggk",
+    "kggggkggggggggkggggk",
+    ".kkggggggggggggggkk.",
+    "...kkggggggggggkk...",
+    "....kggdggggdggk....",
+    "..kkkkkkkkkkkkkkkk..",
+    "..kqqqqqqqqqqqqqqk..",
+    "...kqqqqqqqqqqqqk...",
+    "....kkkkkkkkkkkk...."
+   ],
+   "squash": 13,
+   "leaves": 0,
+   "hop": 20,
+   "blink": {
+    "7": "kggkkggggggggggkkggk"
+   }
+  }
+ ]
+}

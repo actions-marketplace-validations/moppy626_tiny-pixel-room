@@ -1,0 +1,62 @@
+name: リリース
+
+# リリースを出したら、同じメジャー版のタグ (v1 など) を、そのリリースのコミットに付け替える。
+# 使う人のワークフローは moppy626/tiny-pixel-room@v1 と書くので、v1 を付け替えると、次の実行から新しい版が動く。
+# リリースのタグは v1.2.3 の形にする。付け替えるのは、そのメジャー版のいちばん新しい版のときだけ (scripts/move-major-tag.mjs)。
+# released は、正式なリリースを出したときと、プレリリースを正式なリリースに変えたときに動く。プレリリースでは動かない。
+on:
+  release:
+    types: [released]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+# 使う Action は、タグの付け替えの影響を受けないようコミット SHA で指定する。更新は Dependabot が PR で知らせる。
+jobs:
+  # 付け替える前に、リリースのコミットでテストが通り、Action が動かす dist/index.js が src と合っているか確かめる。
+  # npm の依存パッケージを動かすので、読み取りだけにしておく。
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: dist が src から作ったものと同じか確かめる
+        run: |
+          npm run build
+          if [ -n "$(git status --porcelain -- dist)" ]; then
+            git status --short -- dist
+            echo '::error::dist/index.js が src と合っていません。npm run build をしてコミットし、そのコミットでリリースを出し直してください'
+            exit 1
+          fi
+
+  # タグを push する権限は、このジョブだけに付ける。npm の依存パッケージは動かさない (scripts/move-major-tag.mjs)。
+  move-tag:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      # ほかの版のタグと比べるので、すべてのタグを取ってくる。
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      # タグの名前は式で run に埋め込まず、環境変数で渡す。
+      - run: node scripts/move-major-tag.mjs "$TAG"
+        env:
+          TAG: ${{ github.event.release.tag_name }}

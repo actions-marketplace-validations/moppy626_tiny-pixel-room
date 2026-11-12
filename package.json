@@ -1,0 +1,23 @@
+{
+  "name": "tiny-pixel-room",
+  "version": "1.0.0",
+  "description": "GitHub プロフィールに、育つドット絵のおへやを飾る GitHub Action",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "build": "esbuild src/index.mjs --bundle --platform=node --format=esm --target=node24 --outfile=dist/index.js",
+    "samples": "node scripts/samples.mjs",
+    "card": "node src/cli.mjs",
+    "site": "node scripts/build-site.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "opentype.js": "^2.0.0"
+  }
+}
